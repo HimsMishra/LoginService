@@ -23,8 +23,17 @@ Conclusion:-
 dotnet tool install --global dotnet-ef
 --to check installtion 
 dotnet ef
+--to install EntityFrameworkcore
+dotnet add package Microsoft.EntityFrameworkcore
+dotnet add package Microsoft.EntityFrameworkcore.sqlserver
+dotnet add package Microsoft.EntityFrameworkcore.tools
+dotnet add package Microsoft.EntityFrameworkcore.Design
+
 -- to generate database
 dotnet ef migrations add Test
+dotnet ef database update
+
+
 
 
 
