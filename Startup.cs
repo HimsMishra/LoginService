@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using LoginService.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -29,16 +23,13 @@ namespace LoginService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LoginService", Version = "v1" });
             });
-            //Do Aprovide ApplicationDBCOntext class and UserRepository class for Auto Instanciation.
-            services.AddDbContext<ApplicationDBContext>(tmp => 
-            tmp.UseSqlServer(Configuration.GetConnectionString("MyConnectionString")));
-            //Per call
+            services.AddDbContext<ApplicationDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MyConnectionString")));
             services.AddTransient<IUserRepository, UserRepository>();
         }
 
@@ -53,11 +44,8 @@ namespace LoginService
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
